@@ -52,11 +52,16 @@ class sqlQuery {
 	 * @param string $sqlFileName
 	 * @return boolean
 	 */
-	public function __construct($sqlFileName) {
-		if (!$this->openFile($sqlFileName)) {
-			return false;
+	public function __construct($sqlFileName = NULL) {
+		if (!empty($sqlFileName)) {
+			if (!$this->openFile($sqlFileName)) {
+				return false;
+			}
 		}
-		$this->explodeQueryParams();
+	}
+
+	public function setSqlDirectory($sqlDirectory) {
+		$this->sqlDirectory = sqlDirectory;
 	}
 
 	/**
@@ -76,6 +81,32 @@ class sqlQuery {
 			}
 		}
 		return $_sqlQuery;
+	}
+
+	/**
+	 * @param string SQL query
+	 */
+	public function setQuery($query) {
+		$this->sqlQuery = $query;
+		$this->explodeQueryParams();
+	}
+
+	/**
+	 *
+	 * @param string $sqlFileName
+	 * @return boolean
+	 */
+	public function openFile($sqlFileName) {
+		$handle = fopen($this->sqlDirectory . $sqlFileName . ".sql", "r");
+		if (0 != filesize($this->sqlDirectory . $sqlFileName . ".sql")) {
+			$this->sqlQuery = fread($handle, filesize($this->sqlDirectory . $sqlFileName . ".sql"));
+		} else {
+			fclose($handle);
+			return false;
+		}
+		fclose($handle);
+		$this->explodeQueryParams();
+		return true;
 	}
 
 	/**
@@ -138,28 +169,14 @@ class sqlQuery {
 		return $this->params[$parameterName]['type'];
 	}
 
-	/**
-	 * 
-	 * @param string $sqlFileName
-	 * @return boolean
-	 */
-	private function openFile($sqlFileName) {
-		$handle = fopen($this->sqlDirectory . $sqlFileName . ".sql", "r");
-		if (0 != filesize($this->sqlDirectory . $sqlFileName . ".sql")) {
-			$this->sqlQuery = fread($handle, filesize($this->sqlDirectory . $sqlFileName . ".sql"));
-		} else {
-			fclose($handle);
-			return false;
-		}
-		fclose($handle);
-		return true;
-	}
 
 	/**
 	 * 
 	 */
 	private function explodeQueryParams() {
 		$matches = array();
+		$this->params = array();
+
 		preg_match_all('/{(.*?)}/', str_replace(array("\n", "\r", "\t", "  "), " ", $this->sqlQuery), $matches, PREG_PATTERN_ORDER);
 
 		$queryKeys = $matches[1];
