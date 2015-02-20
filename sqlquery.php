@@ -48,7 +48,6 @@ class sqlQuery {
 	private $sqlDirectory = 'SQL/';
 
 	/**
-	 * 
 	 * @param string $sqlFileName
 	 * @return boolean
 	 */
@@ -60,8 +59,11 @@ class sqlQuery {
 		}
 	}
 
+	/**
+	 * @param string $sqlDirectory
+	 */
 	public function setSqlDirectory($sqlDirectory) {
-		$this->sqlDirectory = sqlDirectory;
+		$this->sqlDirectory = $sqlDirectory;
 	}
 
 	/**
