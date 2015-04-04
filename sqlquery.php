@@ -71,7 +71,7 @@ class sqlQuery {
 	 * @return string
 	 */
 	public function getQuery() {
-		$_sqlQuery = $this->sqlQuery;
+		$_sqlQuery = $this->parseConditions();
 		if (0 < count($this->params)) {
 			foreach ($this->params as $paramName => $paramValue) {
 				$paramKey = '{' . $paramName . ( ( empty($paramValue['type']) ) ? '' : ('->' . $paramValue['type'])) . '}';
@@ -136,10 +136,10 @@ class sqlQuery {
 
 		// list of string vartypes
 		if ($parameterValue instanceof string ||
-			$parameterValue instanceof email ||
-			$parameterValue instanceof date ||
-			$parameterValue instanceof secureString ||
-			$parameterValue instanceof nip
+				$parameterValue instanceof email ||
+				$parameterValue instanceof date ||
+				$parameterValue instanceof secureString ||
+				$parameterValue instanceof nip
 		) {
 			$this->params[$parameterName]['value'] = "'" . $parameterValue->val() . "'";
 		} else {
@@ -171,7 +171,6 @@ class sqlQuery {
 		return $this->params[$parameterName]['type'];
 	}
 
-
 	/**
 	 * 
 	 */
@@ -179,7 +178,7 @@ class sqlQuery {
 		$matches = array();
 		$this->params = array();
 
-		preg_match_all('/{(.*?)}/', str_replace(array("\n", "\r", "\t", "  "), " ", $this->sqlQuery), $matches, PREG_PATTERN_ORDER);
+		preg_match_all('/{(?!CON)(.*?)(?!CON)}/', str_replace(array("\n", "\r", "\t", "  "), " ", $this->sqlQuery), $matches, PREG_PATTERN_ORDER);
 
 		$queryKeys = $matches[1];
 
@@ -221,6 +220,46 @@ class sqlQuery {
 			throw new Exception("$parameterName field error: " . $e->getMessage());
 		}
 		return $parameterValue;
+	}
+
+	/**
+	 * 
+	 * @return string SQLQuery
+	 */
+	private function parseConditions() {
+		$sqlQuery = $this->sqlQuery;
+		$matches = array();
+		$a = 0;
+		$rec = array();
+		preg_match_all('{CON\[(.*?)\]:(.*?):CON}', str_replace(array("\n", "\r", "\t", "  "), " ", $sqlQuery), $matches, PREG_PATTERN_ORDER);
+		$keys = $matches[1];
+		$records = $matches[2];
+
+		foreach ($keys as $key => $value) {
+			$rec[$value] = $records[$a];
+			$a++;
+		}
+
+		foreach ($this->params as $parameterName => $value) {
+			if (isset($rec[$parameterName]) && !empty($value['value'])) {
+				$sqlQuery = str_replace("{CON[{$parameterName}]:" . $rec[$parameterName] . ":CON}", $rec[$parameterName], str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
+			}
+		}
+		return $this->clearUnsetConditions($sqlQuery, $keys, $records);
+	}
+
+	/**
+	 * 
+	 * @param array $keys
+	 * @param array $records
+	 */
+	private function clearUnsetConditions($sqlQuery, $keys, $records) {
+		$a = 0;
+		foreach ($keys as $key => $value) {
+			$sqlQuery = str_replace("{CON[{$value}]:" . $records[$a] . ":CON}", "", str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
+			$a++;
+		}
+		return $sqlQuery;
 	}
 
 }
