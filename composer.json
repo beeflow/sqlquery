@@ -4,7 +4,7 @@
   "license": "GPL",
   "description": "SQLQuery Manager Util",
   "keywords": [
-    "json"
+    "SQL", "SQL manager"
   ],
   "homepage": "https://github.com/beeflow/sqlquery",
   "authors": [
