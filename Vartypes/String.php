@@ -16,11 +16,12 @@
  * for more details. 
  */
 
+namespace Beeflow\SQLQueryManager\Vartypes;
+
 /**
- *
- * @author Rafał Przetakowski <rprzetakowski@pr-projektos.pl>
+ * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class string {
+class String {
 
 	/**
 	 * 
@@ -31,7 +32,7 @@ class string {
 	/**
 	 *
 	 * @param Mixed $val
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function __construct($val, $lenght = null) {
 		$val = (string) $val;
@@ -45,7 +46,7 @@ class string {
 				}
 			}
 		} else {
-			throw new Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));
+			throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));
 		}
 	}
 
@@ -63,4 +64,3 @@ class string {
 
 }
 
-?>
