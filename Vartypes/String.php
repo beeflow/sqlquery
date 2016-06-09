@@ -35,9 +35,8 @@ class String {
 	 * @throws \Exception
 	 */
 	public function __construct($val, $lenght = null) {
-		$val = (string) $val;
 		$lenght = (integer) $lenght;
-		if (gettype($val) == __CLASS__) {
+		if (is_string($val)) {
 			if (empty($lenght)) {
 				$this->value = $val;
 			} else if (0 < $lenght) {
