@@ -39,7 +39,7 @@ class Boolean
     public function __construct($val)
     {
         $val = (boolean)$val;
-        if (gettype($val) == __CLASS__) {
+        if (gettype($val) == 'boolean') {
             $this->value = $val;
         } else {
             throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));

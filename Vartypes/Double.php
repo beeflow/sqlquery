@@ -41,7 +41,7 @@ class Double
     {
         $val = (double)str_replace(',', '.', $val);
 
-        if (gettype($val) == __CLASS__) {
+        if (gettype($val) == 'double') {
             if (empty($lenght)) {
                 $this->value = $val;
             } else {

@@ -41,7 +41,7 @@ class Float
     {
         $value = (float)str_replace(',', '.', $value);
 
-        if (gettype($value) == __CLASS__) {
+        if (gettype($value) == 'float') {
             $this->value = $value;
         } else {
             throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value) . ' - ' . $value);
