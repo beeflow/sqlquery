@@ -39,7 +39,7 @@ class Integer
     public function __construct($value)
     {
         $value = (integer)$value;
-        if (!empty($value)) {
+        if (isset($value)) {
             $this->value = $value;
         } else {
             throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
