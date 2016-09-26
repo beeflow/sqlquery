@@ -7,6 +7,16 @@ like secureString, email etc...
 
 To better secure queries, you can create your own var types classes, for example password or phone
 
+## Install
+
+### composer
+
+    $ composer require "beeflow/sqlquerymanager:dev-master"
+
+### GIT
+    
+    $ git clone https://github/beeflow/
+
 ## Examples
 
 ### SQL query example:
