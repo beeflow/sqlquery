@@ -30,25 +30,28 @@ use Beeflow\SQLQueryManager\Exception\EmptyQueryException;
  *
  * @example SELECT example1 FROM exampleTable WHERE example = {value->secureString}
  *
- * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
+ * @author  Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
 class SQLQuery
 {
 
     /**
      * SQL params
+     *
      * @var array
      */
     private $params = array();
 
     /**
      * SQL query
+     *
      * @var type
      */
     private $sqlQuery;
 
     /**
      * Directory where are SQL files
+     *
      * @var string
      */
     private $sqlDirectory = 'SQL/';
@@ -139,18 +142,18 @@ class SQLQuery
     /**
      *
      * @param string $parameterName
-     * @param Mixed $parameterValue
+     * @param Mixed  $parameterValue
      *
      * @return null
      */
     public function __set($parameterName, $parameterValue)
     {
-        if (!isset($this->params[$parameterName])) {
+        if (!isset($this->params[ $parameterName ])) {
             return null;
         }
 
         if (is_array($parameterValue)) {
-            $this->params[$parameterName]['value'] = $this->getImplodeArrayValue($parameterValue);
+            $this->params[ $parameterName ]['value'] = $this->getImplodeArrayValue($parameterValue);
 
             return;
         }
@@ -158,22 +161,12 @@ class SQLQuery
         if (!is_object($parameterValue) && !$this->isEmptyParamType($parameterName)) {
             $parameterValue = $this->getObjectOfParameterValue($parameterName, $parameterValue);
         } else {
-            $this->params[$parameterName]['value'] = is_numeric($parameterValue) ? $parameterValue : "'" . $parameterValue . "'";
+            $this->params[ $parameterName ]['value'] = is_numeric($parameterValue) ? $parameterValue : "'" . $parameterValue . "'";
 
             return;
         }
 
-        // list of string vartypes
-        if ($parameterValue instanceof String ||
-            $parameterValue instanceof Email ||
-            $parameterValue instanceof Date ||
-            $parameterValue instanceof SecureString ||
-            $parameterValue instanceof Nip
-        ) {
-            $this->params[$parameterName]['value'] = "'" . $parameterValue->val() . "'";
-        } else {
-            $this->params[$parameterName]['value'] = $parameterValue->val();
-        }
+        $this->params[ $parameterName ]['value'] = $parameterValue->val();
     }
 
     /**
@@ -186,7 +179,7 @@ class SQLQuery
     {
         foreach ($arrayValue as $key => $value) {
             if (!is_numeric($value)) {
-                $arrayValue[$key] = "'" . $value . "'";
+                $arrayValue[ $key ] = "'" . $value . "'";
             }
         }
 
@@ -201,7 +194,7 @@ class SQLQuery
      */
     private function getParamType($parameterName)
     {
-        return $this->params[$parameterName]['type'];
+        return $this->params[ $parameterName ]['type'];
     }
 
     /**
@@ -221,7 +214,7 @@ class SQLQuery
             $paramName = $paramArray[0];
             $paramType = (isset($paramArray[1]) ? $paramArray[1] : null);
 
-            $this->params[$paramName] = array("value" => null, "type" => $paramType);
+            $this->params[ $paramName ] = array("value" => null, "type" => $paramType);
         }
     }
 
@@ -240,7 +233,7 @@ class SQLQuery
 
     /**
      *
-     * @param type $parameterName
+     * @param type      $parameterName
      * @param paramType $parameterValue
      *
      * @return Object
@@ -253,7 +246,7 @@ class SQLQuery
             if (empty($paramType)) {
                 throw new \Exception("The parameter $parameterName is the wrong data type...");
             }
-            $paramClass = 'Beeflow\SQLQueryManager\Vartypes\\' . ucfirst($paramType);
+            $paramClass = 'Beeflow\SQLQueryManager\Vartypes\BF' . ucfirst($paramType);
             $parameterValue = new $paramClass($parameterValue);
         } catch (\Exception $e) {
             throw new \Exception("$parameterName field error: " . $e->getMessage());
@@ -277,13 +270,13 @@ class SQLQuery
         $records = $matches[2];
 
         foreach ($keys as $key => $value) {
-            $rec[$value] = $records[$a];
+            $rec[ $value ] = $records[ $a ];
             $a++;
         }
 
         foreach ($this->params as $parameterName => $value) {
-            if (isset($rec[$parameterName]) && !empty($value['value'])) {
-                $sqlQuery = str_replace("{CON[{$parameterName}]:" . $rec[$parameterName] . ":CON}", $rec[$parameterName], str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
+            if (isset($rec[ $parameterName ]) && !empty($value['value'])) {
+                $sqlQuery = str_replace("{CON[{$parameterName}]:" . $rec[ $parameterName ] . ":CON}", $rec[ $parameterName ], str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
             }
         }
 
@@ -291,15 +284,17 @@ class SQLQuery
     }
 
     /**
+     * @param string $sqlQuery
+     * @param array  $keys
+     * @param array  $records
      *
-     * @param array $keys
-     * @param array $records
+     * @return mixed
      */
     private function clearUnsetConditions($sqlQuery, $keys, $records)
     {
         $a = 0;
         foreach ($keys as $key => $value) {
-            $sqlQuery = str_replace("{CON[{$value}]:" . $records[$a] . ":CON}", "", str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
+            $sqlQuery = str_replace("{CON[{$value}]:" . $records[ $a ] . ":CON}", "", str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
             $a++;
         }
 

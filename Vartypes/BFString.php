@@ -21,7 +21,7 @@ namespace Beeflow\SQLQueryManager\Vartypes;
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class String {
+class BFString {
 
 	/**
 	 * 

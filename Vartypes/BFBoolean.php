@@ -21,7 +21,7 @@ namespace Beeflow\SQLQueryManager\Vartypes;
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class Float
+class BFBoolean
 {
 
     /**
@@ -29,22 +29,20 @@ class Float
      * @var Mixed
      */
     private $value;
-    private $decimals;
 
     /**
      *
-     * @param Mixed $value
+     * @param Mixed $val
      *
      * @throws \Exception
      */
-    public function __construct($value)
+    public function __construct($val)
     {
-        $value = (float)str_replace(',', '.', $value);
-
-        if (gettype($value) == 'float') {
-            $this->value = $value;
+        $val = (boolean)$val;
+        if (gettype($val) == 'boolean') {
+            $this->value = $val;
         } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value) . ' - ' . $value);
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));
         }
     }
 
@@ -53,23 +51,13 @@ class Float
         return $this->__toString();
     }
 
-    public function setDecimals($decimals)
-    {
-        $this->decimals = $decimals;
-    }
-
     /**
      *
      * @return Mixed
      */
     public function __toString()
     {
-        if (empty($this->decimals)) {
-            return (float)$this->value;
-        } else {
-            return (float)round($this->value, $this->decimals);
-        }
+        return (boolean)$this->value;
     }
 
 }
-

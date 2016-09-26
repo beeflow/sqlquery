@@ -18,12 +18,12 @@
 
 namespace Beeflow\SQLQueryManager\Vartypes;
 
-use Beeflow\SQLQueryManager\Vartype\String;
+use Beeflow\SQLQueryManager\Vartype\BFString;
 
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class Date extends DateTime
+class BFDate extends \DateTime
 {
 
     private $dateTimeFormat = 'Y-m-d H:i:s';
@@ -31,10 +31,9 @@ class Date extends DateTime
     private $timeZone = 'Europe/Warsaw';
 
     /**
+     * BFDate constructor.
      *
-     * @param Mixed $val
-     *
-     * @throws Exception
+     * @param string $time
      */
     public function __construct($time)
     {
@@ -58,27 +57,27 @@ class Date extends DateTime
 
     /**
      *
-     * @param string $dateTimeFormat {new string($dateTimeFormat)}
+     * @param BFString $dateTimeFormat {new BFString($dateTimeFormat)}
      */
-    public function setDateTimeFormat(String $dateTimeFormat)
+    public function setDateTimeFormat(BFString $dateTimeFormat)
     {
         $this->dateTimeFormat = $dateTimeFormat->val();
     }
 
     /**
      *
-     * @param string $dateFormat {new string($dateFormat)}
+     * @param BFString $dateFormat {new BFString($dateFormat)}
      */
-    public function setDateFormat(String $dateFormat)
+    public function setDateFormat(BFString $dateFormat)
     {
         $this->dateFormat = $dateFormat->val();
     }
 
     /**
      *
-     * @param string $timezone {new string($timezone)}
+     * @param BFString $timezone {new BFString($timezone)}
      */
-    public function setTimezone(String $timezone)
+    public function setTimezone(BFString $timezone)
     {
         parent::setTimezone($timezone->val());
     }

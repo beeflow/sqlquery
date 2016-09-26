@@ -19,13 +19,9 @@
 namespace Beeflow\SQLQueryManager\Vartypes;
 
 /**
- * nip - polish vat no
- * if you want to check european vat no, see:
- * http://www.phpclasses.org/package/2280-PHP-Check-if-a-European-VAT-number-is-valid.html
- *
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class Nip
+class BFInteger
 {
 
     /**
@@ -36,36 +32,20 @@ class Nip
 
     /**
      *
-     * @param Mixed $val
+     * @param Mixed $value
      *
      * @throws \Exception
      */
-    public function __construct($numer)
+    public function __construct($value)
     {
-
-        $numer = str_replace('-', '', $numer);
-        if (strlen($numer) <> 10) {
-            throw new Exception('Value must be correct ' . __CLASS__ . ' type');
-        }
-
-        $wagi = '657234567';
-        $suma = 0;
-
-        for ($i = 0; $i <= 8; $i++) {
-            $suma += (integer)$numer[$i] * (integer)$wagi[$i];
-        }
-
-        if ((integer)$numer[9] == ($suma % 11)) {
-            $this->value = $numer;
+        $value = (integer)$value;
+        if (isset($value)) {
+            $this->value = $value;
         } else {
-            throw new \Exception('Value must be correct ' . __CLASS__ . ' type');
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
         }
     }
 
-    /**
-     *
-     * @return string
-     */
     public function val()
     {
         return $this->__toString();
@@ -73,11 +53,11 @@ class Nip
 
     /**
      *
-     * @return String
+     * @return Mixed
      */
     public function __toString()
     {
-        return (string)$this->value;
+        return (integer)$this->value;
     }
 
 }

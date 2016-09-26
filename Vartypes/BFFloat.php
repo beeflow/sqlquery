@@ -21,7 +21,7 @@ namespace Beeflow\SQLQueryManager\Vartypes;
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class Double
+class BFFloat
 {
 
     /**
@@ -29,26 +29,22 @@ class Double
      * @var Mixed
      */
     private $value;
+    private $decimals;
 
     /**
      *
-     * @param Mixed $val
-     * @param $lenght ilość miejsc po przecinku
+     * @param Mixed $value
      *
      * @throws \Exception
      */
-    public function __construct($val, $lenght = null)
+    public function __construct($value)
     {
-        $val = (double)str_replace(',', '.', $val);
+        $value = (float)str_replace(',', '.', $value);
 
-        if (gettype($val) == 'double') {
-            if (empty($lenght)) {
-                $this->value = $val;
-            } else {
-                $this->value = (double)number_format($val, $lenght, ".", '');
-            }
+        if (gettype($value) == 'float') {
+            $this->value = $value;
         } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val) . ' - ' . $val);
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value) . ' - ' . $value);
         }
     }
 
@@ -57,13 +53,22 @@ class Double
         return $this->__toString();
     }
 
+    public function setDecimals($decimals)
+    {
+        $this->decimals = $decimals;
+    }
+
     /**
      *
      * @return Mixed
      */
     public function __toString()
     {
-        return (double)$this->value;
+        if (empty($this->decimals)) {
+            return (float)$this->value;
+        } else {
+            return (float)round($this->value, $this->decimals);
+        }
     }
 
 }

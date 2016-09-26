@@ -21,7 +21,7 @@ namespace Beeflow\SQLQueryManager\Vartypes;
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class Email
+class BFDouble
 {
 
     /**
@@ -31,17 +31,24 @@ class Email
     private $value;
 
     /**
-     * Regular expression for email address
-     * @var string
+     *
+     * @param Mixed $val
+     * @param $lenght ilość miejsc po przecinku
+     *
+     * @throws \Exception
      */
-    private $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-
-    public function __construct($value)
+    public function __construct($val, $lenght = null)
     {
-        if (!preg_match($this->regexp, $value)) {
-            throw new \Exception('Value must be correct ' . __CLASS__ . ' type.');
+        $val = (double)str_replace(',', '.', $val);
+
+        if (gettype($val) == 'double') {
+            if (empty($lenght)) {
+                $this->value = $val;
+            } else {
+                $this->value = (double)number_format($val, $lenght, ".", '');
+            }
         } else {
-            $this->value = $value;
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val) . ' - ' . $val);
         }
     }
 
@@ -50,9 +57,13 @@ class Email
         return $this->__toString();
     }
 
+    /**
+     *
+     * @return Mixed
+     */
     public function __toString()
     {
-        return $this->value;
+        return (double)$this->value;
     }
 
 }
