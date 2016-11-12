@@ -140,6 +140,18 @@ class SQLQuery
     }
 
     /**
+     * @param string $name      name of SQLFile
+     * @param array  $arguments list of sql params
+     */
+    public function __call($name, $arguments)
+    {
+        $this->openFile($name);
+        foreach ($arguments[0] as $key => $argument) {
+            $this->__set($key, $argument);
+        }
+    }
+
+    /**
      *
      * @param string $parameterName
      * @param Mixed  $parameterValue
