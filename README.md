@@ -23,6 +23,27 @@ To better secure queries, you can create your own var types classes, for example
 
 	SELECT example1 FROM exampleTable WHERE example = {value->secureString}
 
+### Example with new method of calling SQL files
+
+    `<?php
+    
+    	use Beeflow\SQLQueryManager\SQLQuery
+    
+    	try {
+    	    $query = new SQLQuery();
+            $query->sqlExample([
+                    'value'                  => 'TEST_VALUE',
+                    'value2'                 => 11,
+                    'vatno'                  => '1111111111',
+                    'valueArrayWithoutAtype' => array('one', 'two', 'tree')
+            ]);
+             
+            echo $query->getQuery();
+    	} catch (Exception $ex) {
+            echo $ex->getMessage();
+    	}`
+    
+    
 ### Example with a correct data:
 
 	`<?php

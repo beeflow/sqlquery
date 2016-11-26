@@ -146,6 +146,9 @@ class SQLQuery
     public function __call($name, $arguments)
     {
         $this->openFile($name);
+        if (!isset($arguments[0])) {
+            return;
+        }
         foreach ($arguments[0] as $key => $argument) {
             $this->__set($key, $argument);
         }
