@@ -220,7 +220,7 @@ class SQLQuery
         $matches = array();
         $this->params = array();
 
-        preg_match_all('/{(?!CON)(.*?)(?!CON)}/', str_replace(array("\n", "\r", "\t", "  "), " ", $this->sqlQuery), $matches, PREG_PATTERN_ORDER);
+        preg_match_all('/{(?!CON)(.*?)(?!CON)}/', str_replace(array("\n", "\r"), " ", $this->sqlQuery), $matches, PREG_PATTERN_ORDER);
 
         $queryKeys = $matches[1];
 
@@ -280,7 +280,7 @@ class SQLQuery
         $matches = array();
         $a = 0;
         $rec = array();
-        preg_match_all('{CON\[(.*?)\]:(.*?):CON}', str_replace(array("\n", "\r", "\t", "  "), " ", $sqlQuery), $matches, PREG_PATTERN_ORDER);
+        preg_match_all('{CON\[(.*?)\]:(.*?):CON}', str_replace(array("\n", "\r"), " ", $sqlQuery), $matches, PREG_PATTERN_ORDER);
         $keys = $matches[1];
         $records = $matches[2];
 
