@@ -285,12 +285,29 @@ class SQLQuery
         $records = $matches[2];
 
         foreach ($keys as $key => $value) {
-            $rec[ $value ] = $records[ $a ];
+            if (isset($rec[ $value ]) && !is_array($rec[ $value ])) {
+                $tmp = $rec[ $value ];
+                $rec[ $value ] = [$tmp, $records[ $a ]];
+            } else if (isset($rec[ $value ]) && is_array($rec[ $value ])) {
+                $rec[ $value ][] = $records[ $a ];
+            } else {
+                $rec[ $value ] = $records[ $a ];
+            }
+
             $a++;
         }
 
         foreach ($this->params as $parameterName => $value) {
-            if (isset($rec[ $parameterName ]) && !empty($value['value'])) {
+
+            if (!isset($rec[ $parameterName ]) || empty($value['value'])) {
+                continue;
+            }
+
+            if (is_array($rec[ $parameterName ])) {
+                foreach ($rec[ $parameterName ] as $arrayValue) {
+                    $sqlQuery = str_replace("{CON[{$parameterName}]:" . $arrayValue . ":CON}", $arrayValue, str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
+                }
+            } else {
                 $sqlQuery = str_replace("{CON[{$parameterName}]:" . $rec[ $parameterName ] . ":CON}", $rec[ $parameterName ], str_replace(array("\n", "\r", "\t"), " ", $sqlQuery));
             }
         }
