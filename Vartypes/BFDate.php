@@ -59,7 +59,7 @@ class BFDate extends \DateTime
      *
      * @param BFString $dateTimeFormat {new BFString($dateTimeFormat)}
      */
-    public function setDateTimeFormat(BFString $dateTimeFormat)
+    public function setDateTimeFormat($dateTimeFormat)
     {
         $this->dateTimeFormat = $dateTimeFormat->val();
     }
@@ -68,7 +68,7 @@ class BFDate extends \DateTime
      *
      * @param BFString $dateFormat {new BFString($dateFormat)}
      */
-    public function setDateFormat(BFString $dateFormat)
+    public function setDateFormat($dateFormat)
     {
         $this->dateFormat = $dateFormat->val();
     }
@@ -77,7 +77,7 @@ class BFDate extends \DateTime
      *
      * @param BFString $timezone {new BFString($timezone)}
      */
-    public function setTimezone(BFString $timezone)
+    public function setTimezone($timezone)
     {
         parent::setTimezone($timezone->val());
     }

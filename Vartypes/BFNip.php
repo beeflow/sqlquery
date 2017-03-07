@@ -45,7 +45,7 @@ class BFNip
 
         $numer = str_replace('-', '', $numer);
         if (strlen($numer) <> 10) {
-            throw new Exception('Value must be correct ' . __CLASS__ . ' type');
+            throw new \Exception('Value must be correct ' . __CLASS__ . ' type');
         }
 
         $wagi = '657234567';
