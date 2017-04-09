@@ -89,5 +89,7 @@ class BFNip implements VartypeInterface
         } else {
             throw new \Exception('Value must be correct ' . __CLASS__ . ' type');
         }
+
+        return $this;
     }
 }

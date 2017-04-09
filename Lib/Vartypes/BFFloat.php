@@ -81,5 +81,7 @@ class BFFloat implements VartypeInterface
         } else {
             throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value) . ' - ' . $value);
         }
+
+        return $this;
     }
 }

@@ -83,5 +83,7 @@ class BFSecureString implements VartypeInterface
         } else {
             throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
         }
+
+        return $this;
     }
 }

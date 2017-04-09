@@ -66,5 +66,7 @@ class BFEmail implements VartypeInterface
         } else {
             $this->value = $value;
         }
+
+        return $this;
     }
 }

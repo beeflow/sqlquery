@@ -107,5 +107,7 @@ class BFDate implements VartypeInterface
     public function setValue($value)
     {
         $this->date = new \DateTime($value);
+
+        return $this;
     }
 }
