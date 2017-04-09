@@ -247,8 +247,8 @@ class SQLQueryManager
                 throw new \Exception("The parameter $parameterName is the wrong data type...");
             }
 
-            $parameterValue = $this->container->get('sql_manager.vartypes.' . ucfirst($paramType));
-            $parameterValue->setValue($parameterValue);
+            $paramClass = $this->container->get('beeflow.sql_manager.vartypes.' . ucfirst($paramType));
+            $parameterValue = $paramClass->setValue($parameterValue);
         } catch (\Exception $e) {
             throw new \Exception("$parameterName field error: " . $e->getMessage());
         }
