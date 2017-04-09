@@ -1,37 +1,37 @@
 services:
     beeflow.sql_query_manager:
-        class: Beeflow\Lib\SQLQueryManager;
+        class: Beeflow\SQLQueryManager\Lib\SQLQueryManager;
         arguments: ["@service_container"]
 
     beeflow.sql_manager.vartypes.Boolean:
-        class: Beeflow\Lib\Vartypes\BFBoolean;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFBoolean;
 
     beeflow.sql_manager.vartypes.Byte:
-        class: Beeflow\Lib\Vartypes\BFByte;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFByte;
 
     beeflow.sql_manager.vartypes.Date:
-        class: Beeflow\Lib\Vartypes\BFDate;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFDate;
 
     beeflow.sql_manager.vartypes.Double:
-        class: Beeflow\Lib\Vartypes\BFDouble;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFDouble;
 
     beeflow.sql_manager.vartypes.Email:
-        class: Beeflow\Lib\Vartypes\BFEmail;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFEmail;
 
     beeflow.sql_manager.vartypes.Float:
-        class: Beeflow\Lib\Vartypes\BFFloat;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFFloat;
 
     beeflow.sql_manager.vartypes.Integer:
-        class: Beeflow\Lib\Vartypes\BFInteger;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFInteger;
 
     beeflow.sql_manager.vartypes.Nip:
-        class: Beeflow\Lib\Vartypes\BFNip;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFNip;
 
     beeflow.sql_manager.vartypes.PsqlSecureString:
-        class: Beeflow\Lib\Vartypes\BFPsqlSecureString;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFPsqlSecureString;
 
     beeflow.sql_manager.vartypes.SecureString:
-        class: Beeflow\Lib\Vartypes\BFSecureString;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFSecureString;
 
     beeflow.sql_manager.vartypes.String:
-        class: Beeflow\Lib\Vartypes\BFString;
+        class: Beeflow\SQLQueryManager\Lib\Vartypes\BFString;
