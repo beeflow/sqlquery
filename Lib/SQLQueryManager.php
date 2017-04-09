@@ -1,41 +1,18 @@
 <?php
 
 /**
- * GNU General Public License (Version 2, June 1991)
+ * @author   Rafal Przetakowski <rafal.p@beeflow.co.uk>
+ * @copyright: (c) 2017 Beeflow Ltd
  *
- * This program is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the License,
- * or (at your option) any later version.
- *
- * This program is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * Date: 09.04.17 10:40
  */
 
-namespace Beeflow\SQLQueryManager;
+namespace Beeflow\SQLQueryManager\Lib;
 
-use Beeflow\SQLQueryManager\Exception\NoQueryException;
-use Beeflow\SQLQueryManager\Exception\EmptyQueryException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * A simple SQL query manager, with option to secure queries by setting parameter type.
- * It uses classes which represents siple var types as string, integer etc... and own classes
- * like secureString, email etc...
- *
- * To better secure queries, you can create your own var types classes, for example password or phone
- *
- * @example    SELECT example1 FROM exampleTable WHERE example = {value->secureString}
- *
- * @author     Rafal Przetakowski <rafal.p@beeflow.co.uk>
- * @deprecated Use service SQLQueryManager instead.
- */
-class SQLQuery
+class SQLQueryManager
 {
-
     /**
      * SQL params
      *
@@ -58,17 +35,18 @@ class SQLQuery
     private $sqlDirectory = 'SQL/';
 
     /**
-     * SQLQuery constructor.
-     *
-     * @param string|NULL $sqlFileName
+     * @var ContainerInterface
      */
-    public function __construct($sqlFileName = null)
+    private $container;
+
+    /**
+     * SQLQueryManager constructor.
+     *
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
-        if (!empty($sqlFileName)) {
-            if (!$this->openFile($sqlFileName)) {
-                return false;
-            }
-        }
+        $this->container = $container;
     }
 
     /**
@@ -268,8 +246,9 @@ class SQLQuery
             if (empty($paramType)) {
                 throw new \Exception("The parameter $parameterName is the wrong data type...");
             }
-            $paramClass = 'Beeflow\SQLQueryManager\Lib\Vartypes\BF' . ucfirst($paramType);
-            $parameterValue = new $paramClass($parameterValue);
+
+            $parameterValue = $this->container->get('sql_manager.vartypes.' . ucfirst($paramType));
+            $parameterValue->setValue($parameterValue);
         } catch (\Exception $e) {
             throw new \Exception("$parameterName field error: " . $e->getMessage());
         }

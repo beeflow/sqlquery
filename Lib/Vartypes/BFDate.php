@@ -16,14 +16,12 @@
  * for more details.
  */
 
-namespace Beeflow\SQLQueryManager\Vartypes;
-
-use Beeflow\SQLQueryManager\Vartype\BFString;
+namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class BFDate extends \DateTime
+class BFDate implements VartypeInterface
 {
 
     private $dateTimeFormat = 'Y-m-d H:i:s';
@@ -31,13 +29,20 @@ class BFDate extends \DateTime
     private $timeZone = 'Europe/Warsaw';
 
     /**
+     * @var \DateTime
+     */
+    private $date;
+
+    /**
      * BFDate constructor.
      *
      * @param string $time
      */
-    public function __construct($time)
+    public function __construct($time = null)
     {
-        parent::__construct($time);
+        if (!empty($time)) {
+            $this->setValue($time);
+        }
     }
 
     public function val()
@@ -52,7 +57,7 @@ class BFDate extends \DateTime
 
     public function getDate()
     {
-        return date_format($this, $this->dateFormat);
+        return date_format($this->date, $this->dateFormat);
     }
 
     /**
@@ -74,12 +79,15 @@ class BFDate extends \DateTime
     }
 
     /**
+     * @param \DateTimeZone $timezone
      *
-     * @param BFString $timezone {new BFString($timezone)}
+     * @return \DateTime
      */
-    public function setTimezone($timezone)
+    public function setTimezone(\DateTimeZone $timezone)
     {
-        parent::setTimezone($timezone->val());
+        $this->date->setTimezone($timezone->val());
+
+        return $this->date;
     }
 
     /**
@@ -88,7 +96,16 @@ class BFDate extends \DateTime
      */
     public function __toString()
     {
-        return date_format($this, $this->dateTimeFormat);
+        return date_format($this->date, $this->dateTimeFormat);
     }
 
+    /**
+     * @param $value
+     *
+     * @throws \Exception
+     */
+    public function setValue($value)
+    {
+        $this->date = new \DateTime($value);
+    }
 }

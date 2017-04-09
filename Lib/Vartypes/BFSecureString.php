@@ -16,35 +16,55 @@
  * for more details.
  */
 
-namespace Beeflow\SQLQueryManager\Vartypes;
+namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
 /**
- * Class BFPsqlSecureString
- *
- * @author  Rafal Przetakowski <rafal.p@beeflow.co.uk>
- * @package Beeflow\SQLQueryManager\Vartypes
+ * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class BFPsqlSecureString
+class BFSecureString implements VartypeInterface
 {
+
     /**
      * Wartość zmienej
-     *
      * @var Mixed
      */
     private $value;
 
     /**
-     * BFPsqlSecureString constructor.
      *
+     * @param Mixed $value
+     *
+     * @throws Exception
+     */
+    public function __construct($value = null)
+    {
+        if (!empty($value)) {
+            $this->setValue($value);
+        }
+    }
+
+    public function val()
+    {
+        return $this->__toString();
+    }
+
+    /**
+     *
+     * @return Mixed
+     */
+    public function __toString()
+    {
+        return (string)$this->value;
+    }
+
+    /**
      * @param $value
      *
      * @throws \Exception
      */
-    public function __construct($value)
+    public function setValue($value)
     {
-        $value = strtr(strip_tags($value),
-        array(
-            "'"    => "''",
+        $value = strtr(addslashes(strip_tags($value)), array(
             "\0"   => "",
             "--"   => "",
             ");"   => "",
@@ -63,21 +83,5 @@ class BFPsqlSecureString
         } else {
             throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
         }
-    }
-
-    /**
-     * @return String
-     */
-    public function val()
-    {
-        return $this->__toString();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string)$this->value;
     }
 }

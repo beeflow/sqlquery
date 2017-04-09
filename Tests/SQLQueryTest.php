@@ -26,7 +26,7 @@ use Beeflow\SQLQueryManager\SQLQuery;
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  * @package Beeflow\SQLQueryManage\Tests
  */
-class SQLQueryTest extends \PHPUnit_Framework_TestCase
+class SQLQueryTest extends \PHPUnit\Framework\TestCase
 {
 
     private $sqlQuery;
@@ -43,7 +43,6 @@ class SQLQueryTest extends \PHPUnit_Framework_TestCase
     public function testFileNotExists()
     {
         $this->sqlQuery->openFile('unknownSQLQuery');
-
     }
 
     /**
@@ -95,7 +94,6 @@ class SQLQueryTest extends \PHPUnit_Framework_TestCase
         $actual = $this->sqlQuery->getQuery();
 
         $this->assertEquals($expected, $actual);
-
     }
 
     /**

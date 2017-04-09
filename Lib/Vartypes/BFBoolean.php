@@ -16,12 +16,12 @@
  * for more details.
  */
 
-namespace Beeflow\SQLQueryManager\Vartypes;
+namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class BFDouble
+class BFBoolean implements VartypeInterface
 {
 
     /**
@@ -33,22 +33,13 @@ class BFDouble
     /**
      *
      * @param Mixed $val
-     * @param $lenght ilość miejsc po przecinku
      *
      * @throws \Exception
      */
-    public function __construct($val, $lenght = null)
+    public function __construct($value = null)
     {
-        $val = (double)str_replace(',', '.', $val);
-
-        if (gettype($val) == 'double') {
-            if (empty($lenght)) {
-                $this->value = $val;
-            } else {
-                $this->value = (double)number_format($val, $lenght, ".", '');
-            }
-        } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val) . ' - ' . $val);
+        if (!empty($value)) {
+            $this->setValue($value);
         }
     }
 
@@ -63,8 +54,21 @@ class BFDouble
      */
     public function __toString()
     {
-        return (double)$this->value;
+        return (boolean)$this->value;
     }
 
+    /**
+     * @param $value
+     *
+     * @throws \Exception
+     */
+    public function setValue($value)
+    {
+        $val = (boolean)$value;
+        if (gettype($val) == 'boolean') {
+            $this->value = $val;
+        } else {
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));
+        }
+    }
 }
-

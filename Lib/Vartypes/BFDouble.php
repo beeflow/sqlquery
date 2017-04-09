@@ -16,12 +16,12 @@
  * for more details.
  */
 
-namespace Beeflow\SQLQueryManager\Vartypes;
+namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class BFEmail
+class BFDouble implements VartypeInterface
 {
 
     /**
@@ -31,17 +31,16 @@ class BFEmail
     private $value;
 
     /**
-     * Regular expression for email address
-     * @var string
+     *
+     * @param Mixed $val
+     * @param $lenght ilość miejsc po przecinku
+     *
+     * @throws \Exception
      */
-    private $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-
-    public function __construct($value)
+    public function __construct($val = null)
     {
-        if (!preg_match($this->regexp, $value)) {
-            throw new \Exception('Value must be correct ' . __CLASS__ . ' type.');
-        } else {
-            $this->value = $value;
+        if (!empty($val)) {
+            $this->setValue($val);
         }
     }
 
@@ -50,10 +49,28 @@ class BFEmail
         return $this->__toString();
     }
 
+    /**
+     *
+     * @return Mixed
+     */
     public function __toString()
     {
-        return $this->value;
+        return (double)$this->value;
     }
 
-}
+    /**
+     * @param $val
+     *
+     * @throws \Exception
+     */
+    public function setValue($val)
+    {
+        $val = (double)str_replace(',', '.', $val);
 
+        if (gettype($val) == 'double') {
+            $this->value = $val;
+        } else {
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val) . ' - ' . $val);
+        }
+    }
+}

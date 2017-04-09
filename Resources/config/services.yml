@@ -1,0 +1,37 @@
+services:
+    beeflow.sql_query_manager:
+        class: Beeflow\Lib\SQLQueryManager;
+        arguments: ["@service_container"]
+
+    sql_manager.vartypes.Boolean:
+        class: Beeflow\Lib\Vartypes\BFBoolean;
+
+    sql_manager.vartypes.Byte:
+        class: Beeflow\Lib\Vartypes\BFByte;
+
+    sql_manager.vartypes.Date:
+        class: Beeflow\Lib\Vartypes\BFDate;
+
+    sql_manager.vartypes.Double:
+        class: Beeflow\Lib\Vartypes\BFDouble;
+
+    sql_manager.vartypes.Email:
+        class: Beeflow\Lib\Vartypes\BFEmail;
+
+    sql_manager.vartypes.Float:
+        class: Beeflow\Lib\Vartypes\BFFloat;
+
+    sql_manager.vartypes.Integer:
+        class: Beeflow\Lib\Vartypes\BFInteger;
+
+    sql_manager.vartypes.Nip:
+        class: Beeflow\Lib\Vartypes\BFNip;
+
+    sql_manager.vartypes.PsqlSecureString:
+        class: Beeflow\Lib\Vartypes\BFPsqlSecureString;
+
+    sql_manager.vartypes.SecureString:
+        class: Beeflow\Lib\Vartypes\BFSecureString;
+
+    sql_manager.vartypes.String:
+        class: Beeflow\Lib\Vartypes\BFString;

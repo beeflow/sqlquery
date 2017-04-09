@@ -16,14 +16,13 @@
  * for more details.
  */
 
-namespace Beeflow\SQLQueryManager\Vartypes;
+namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
-class BFInteger
+class BFString implements VartypeInterface
 {
-
     /**
      *
      * @var Mixed
@@ -32,17 +31,14 @@ class BFInteger
 
     /**
      *
-     * @param Mixed $value
+     * @param Mixed $val
      *
      * @throws \Exception
      */
-    public function __construct($value)
+    public function __construct($value = null)
     {
-        $value = (integer)$value;
-        if (isset($value)) {
-            $this->value = $value;
-        } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
+        if (!empty($value)) {
+            $this->setValue($value);
         }
     }
 
@@ -57,8 +53,20 @@ class BFInteger
      */
     public function __toString()
     {
-        return (integer)$this->value;
+        return (string)$this->value;
     }
 
+    /**
+     * @param $value
+     *
+     * @throws \Exception
+     */
+    public function setValue($value)
+    {
+        if (is_string($value)) {
+            $this->value = $value;
+        } else {
+            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
+        }
+    }
 }
-

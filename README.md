@@ -17,12 +17,36 @@ To better secure queries, you can create your own var types classes, for example
     
     $ git clone https://github/beeflow/
 
+and then add to `app/AppKernel.php`
+
+    public function registerBundles()
+    {
+        ...
+        new Beeflow\SQLQueryManager\SQLQueryBundle(),
+    }
+    
+To add new Vartype just insert into your `services.yml`
+    
+    sql_manager.vartypes.YourVarType:
+            class: YourBundle\Lib\Vartypes\YourVarType;
+            
+and now you can use it in SQL query:
+
+    SELECT example1 FROM exampleTable WHERE example = {value->yourVarType}
+
 ## Examples
 
 ### SQL query example:
 
 	SELECT example1 FROM exampleTable WHERE example = {value->secureString}
 
+### Using SQLQueryManager as Symfony service
+    
+In your Controller:
+    
+    $sqlManager = $this->get('beeflow.sql_query_manager');
+
+    
 ### Example with new method of calling SQL files
 
     `<?php

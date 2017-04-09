@@ -6,7 +6,6 @@
 
 namespace Beeflow\SQLQueryManager\Exception;
 
-
 class EmptyQueryException extends \Exception
 {
 

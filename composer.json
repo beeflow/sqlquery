@@ -1,5 +1,7 @@
 {
   "name": "beeflow/sqlquerymanager",
+  "type": "symfony-bundle",
+  "vesion": "1.0.0",
   "license": "GPL",
   "description": "SQLQuery Manager Util",
   "keywords": [
@@ -17,7 +19,8 @@
     "source": "https://github.com/beeflow/sqlquery/"
   },
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=5.5.0",
+    "symfony/framework-bundle": ">=2.8"
   },
   "autoload": {
     "psr-4": { "Beeflow\\SQLQueryManager\\": "" }

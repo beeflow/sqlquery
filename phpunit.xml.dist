@@ -14,4 +14,11 @@
             <directory>Tests</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>Lib/*</directory>
+        </whitelist>
+    </filter>
+
 </phpunit>
