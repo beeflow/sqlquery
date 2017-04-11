@@ -18,6 +18,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+
 /**
  * nip - polish vat no
  * if you want to check european vat no, see:
@@ -68,13 +70,14 @@ class BFNip implements VartypeInterface
     /**
      * @param $value
      *
-     * @throws \Exception
+     * @return $this
+     * @throws IncorrectValueTypeException
      */
     public function setValue($value)
     {
         $value = str_replace('-', '', $value);
         if (strlen($value) <> 10) {
-            throw new \Exception('Value must be correct ' . __CLASS__ . ' type');
+            throw new IncorrectValueTypeException('Value must be correct ' . __CLASS__ . ' type');
         }
 
         $wagi = '657234567';
@@ -87,7 +90,7 @@ class BFNip implements VartypeInterface
         if ((integer)$value[9] == ($suma % 11)) {
             $this->value = $value;
         } else {
-            throw new \Exception('Value must be correct ' . __CLASS__ . ' type');
+            throw new IncorrectValueTypeException('Value must be correct ' . __CLASS__ . ' type');
         }
 
         return $this;

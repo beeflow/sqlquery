@@ -18,6 +18,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
@@ -57,12 +59,13 @@ class BFEmail implements VartypeInterface
     /**
      * @param $value
      *
-     * @throws \Exception
+     * @return $this
+     * @throws IncorrectValueTypeException
      */
     public function setValue($value)
     {
         if (!preg_match($this->regexp, $value)) {
-            throw new \Exception('Value must be correct ' . __CLASS__ . ' type.');
+            throw new IncorrectValueTypeException('Value must be correct ' . __CLASS__ . ' type.');
         } else {
             $this->value = $value;
         }

@@ -18,6 +18,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
@@ -30,12 +32,11 @@ class BFDouble implements VartypeInterface
      */
     private $value;
 
+
     /**
+     * BFDouble constructor.
      *
-     * @param Mixed $val
-     * @param $lenght ilość miejsc po przecinku
-     *
-     * @throws \Exception
+     * @param null $val
      */
     public function __construct($val = null)
     {
@@ -61,7 +62,8 @@ class BFDouble implements VartypeInterface
     /**
      * @param $val
      *
-     * @throws \Exception
+     * @return $this
+     * @throws IncorrectValueTypeException
      */
     public function setValue($val)
     {
@@ -70,7 +72,7 @@ class BFDouble implements VartypeInterface
         if (gettype($val) == 'double') {
             $this->value = $val;
         } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val) . ' - ' . $val);
+            throw new IncorrectValueTypeException('Value must be ' . __CLASS__ . ' type but is ' . gettype($val) . ' - ' . $val);
         }
 
         return $this;

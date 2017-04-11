@@ -18,6 +18,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
@@ -60,7 +62,8 @@ class BFBoolean implements VartypeInterface
     /**
      * @param $value
      *
-     * @throws \Exception
+     * @return $this
+     * @throws IncorrectValueTypeException
      */
     public function setValue($value)
     {
@@ -68,7 +71,7 @@ class BFBoolean implements VartypeInterface
         if (gettype($val) == 'boolean') {
             $this->value = $val;
         } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));
+            throw new IncorrectValueTypeException('Value must be ' . __CLASS__ . ' type but is ' . gettype($val));
         }
 
         return $this;

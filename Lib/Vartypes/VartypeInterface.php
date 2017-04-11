@@ -8,6 +8,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+
 interface VartypeInterface
 {
     /**
@@ -20,7 +22,7 @@ interface VartypeInterface
     /**
      * @param $value
      *
-     * @throws \Exception
+     * @throws IncorrectValueTypeException
      */
     public function setValue($value);
 

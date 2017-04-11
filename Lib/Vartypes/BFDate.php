@@ -102,7 +102,7 @@ class BFDate implements VartypeInterface
     /**
      * @param $value
      *
-     * @throws \Exception
+     * @return $this
      */
     public function setValue($value)
     {

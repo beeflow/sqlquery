@@ -18,6 +18,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
  */
@@ -70,7 +72,8 @@ class BFFloat implements VartypeInterface
     /**
      * @param $value
      *
-     * @throws \Exception
+     * @return $this
+     * @throws IncorrectValueTypeException
      */
     public function setValue($value)
     {
@@ -79,7 +82,7 @@ class BFFloat implements VartypeInterface
         if (gettype($value) == 'float') {
             $this->value = $value;
         } else {
-            throw new \Exception('Value must be ' . __CLASS__ . ' type but is ' . gettype($value) . ' - ' . $value);
+            throw new IncorrectValueTypeException('Value must be ' . __CLASS__ . ' type but is ' . gettype($value) . ' - ' . $value);
         }
 
         return $this;
