@@ -9,6 +9,8 @@
 
 namespace Beeflow\SQLQueryManager\Lib;
 
+use Beeflow\SQLQueryManager\Exception\EmptyQueryException;
+use Beeflow\SQLQueryManager\Exception\NoQueryException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SQLQueryManager
