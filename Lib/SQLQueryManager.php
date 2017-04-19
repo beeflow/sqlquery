@@ -105,7 +105,7 @@ class SQLQueryManager
         $fileToOpen = $this->sqlDirectory . $sqlFileName . ".sql";
 
         if (!file_exists($fileToOpen)) {
-            throw new NoQueryException('There is no such query as ' . $sqlFileName);
+            throw new NoQueryException('There is no such query as ' . $this->sqlDirectory . $sqlFileName);
         }
 
         $handle = fopen($fileToOpen, "r");
