@@ -1,7 +1,7 @@
 {
   "name": "beeflow/sqlquerymanager",
   "type": "symfony-bundle",
-  "vesion": "1.0.0",
+  "vesion": "1.2.0",
   "license": "GPL",
   "description": "SQLQuery Manager Util",
   "keywords": [

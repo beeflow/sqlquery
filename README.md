@@ -47,6 +47,19 @@ and now you can use it in SQL query:
 In your Controller:
     
     $sqlManager = $this->get('beeflow.sql_query_manager');
+    
+Set default directory with SQL files
+
+    $slqlManager->setSqlDirectory('sql_directory');
+    
+Use query as a method with temporary different directory with SQL files:
+
+    $slqlManager->sqlExample([
+          'value'                  => 'TEST_VALUE',
+          'value2'                 => 11,
+          'vatno'                  => '1111111111',
+          'valueArrayWithoutAtype' => array('one', 'two', 'tree')
+    ], 'someTmpDirectory');
 
     
 ### Example with new method of calling SQL files
