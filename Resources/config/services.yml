@@ -5,33 +5,55 @@ services:
 
     beeflow.sql_manager.vartypes.Boolean:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFBoolean
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: boolean }
 
     beeflow.sql_manager.vartypes.Byte:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFByte
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: byte }
 
     beeflow.sql_manager.vartypes.Date:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFDate
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: date }
 
     beeflow.sql_manager.vartypes.Double:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFDouble
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: double }
 
     beeflow.sql_manager.vartypes.Email:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFEmail
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: email }
 
     beeflow.sql_manager.vartypes.Float:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFFloat
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: float }
 
     beeflow.sql_manager.vartypes.Integer:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFInteger
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: integer }
 
     beeflow.sql_manager.vartypes.Nip:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFNip
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: nip }
 
     beeflow.sql_manager.vartypes.PsqlSecureString:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFPsqlSecureString
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: psqlSecureString }
 
     beeflow.sql_manager.vartypes.SecureString:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFSecureString
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: secureString }
 
     beeflow.sql_manager.vartypes.String:
         class: Beeflow\SQLQueryManager\Lib\Vartypes\BFString
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: string }

@@ -27,12 +27,14 @@ and then add to `app/AppKernel.php`
     
 To add new Vartype just insert into your `services.yml`
     
-    sql_manager.vartypes.YourVarType:
-            class: YourBundle\Lib\Vartypes\YourVarType;
+    app.YourVarType:
+        class: YourBundle\Lib\Vartypes\YourVarType;
+        tags:
+            - { name: beeflow.sql_manager.vartype, alias: yourVarTypeAlias }
             
 and now you can use it in SQL query:
 
-    SELECT example1 FROM exampleTable WHERE example = {value->yourVarType}
+    SELECT example1 FROM exampleTable WHERE example = {value->yourVarTypeAlias}
 
 ## Examples
 

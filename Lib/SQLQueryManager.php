@@ -10,7 +10,10 @@
 namespace Beeflow\SQLQueryManager\Lib;
 
 use Beeflow\SQLQueryManager\Exception\EmptyQueryException;
+use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
 use Beeflow\SQLQueryManager\Exception\NoQueryException;
+use Beeflow\SQLQueryManager\Exception\TypeNotFoundException;
+use Beeflow\SQLQueryManager\Lib\Vartypes\VartypeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SQLQueryManager
@@ -42,6 +45,11 @@ class SQLQueryManager
     private $container;
 
     /**
+     * @var array
+     */
+    private $varTypes = array();
+
+    /**
      * SQLQueryManager constructor.
      *
      * @param ContainerInterface $container
@@ -49,6 +57,27 @@ class SQLQueryManager
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param VartypeInterface $varType
+     * @param string           $alias
+     */
+    public function addVarType(VartypeInterface $varType, $alias)
+    {
+        $this->varTypes[ $alias ] = $varType;
+    }
+
+    /**
+     * @param string $alias
+     *
+     * @return array|NULL
+     */
+    public function getVarType($alias)
+    {
+        if (array_key_exists($alias, $this->varTypes)) {
+            return $this->varTypes[ $alias ];
+        }
     }
 
     /**
@@ -130,8 +159,6 @@ class SQLQueryManager
      */
     public function __call($name, $arguments)
     {
-        $this->openFile($name);
-
         if (!isset($arguments[0])) {
             return;
         }
@@ -246,10 +273,15 @@ class SQLQueryManager
         try {
             $paramType = $this->getParamType($parameterName);
             if (empty($paramType)) {
-                throw new \Exception("The parameter $parameterName is the wrong data type...");
+                throw new IncorrectValueTypeException("The parameter $parameterName is the wrong data type...");
             }
 
-            $paramClass = $this->container->get('beeflow.sql_manager.vartypes.' . ucfirst($paramType));
+            $paramClass = $this->getVarType($paramType);
+
+            if (!($paramClass instanceof VartypeInterface)) {
+                throw new TypeNotFoundException('There is no such type as ' . $paramType);
+            }
+
             $parameterValue = $paramClass->setValue($parameterValue);
         } catch (\Exception $e) {
             throw new \Exception("$parameterName field error: " . $e->getMessage());

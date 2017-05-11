@@ -8,8 +8,14 @@
 
 namespace Beeflow\SQLQueryManager;
 
+use Beeflow\SQLQueryManager\DependencyInjection\Compiler\SQLQueryVartypePass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SQLQueryBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new SQLQueryVartypePass());
+    }
 }
