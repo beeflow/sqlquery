@@ -123,15 +123,16 @@ class SQLQueryManager
     }
 
     /**
-     * @param $sqlFileName
+     * @param string $sqlFileName
+     * @param string $sqlDirecotry
      *
      * @return $this
      * @throws EmptyQueryException
      * @throws NoQueryException
      */
-    public function openFile($sqlFileName)
+    public function openFile($sqlFileName, $sqlDirecotry = null)
     {
-        $fileToOpen = $this->sqlDirectory . $sqlFileName . ".sql";
+        $fileToOpen = (empty($sqlDirecotry) ? $this->sqlDirectory : $sqlDirecotry) . $sqlFileName . ".sql";
 
         if (!file_exists($fileToOpen)) {
             throw new NoQueryException('There is no such query as ' . $this->sqlDirectory . $sqlFileName);
@@ -159,6 +160,16 @@ class SQLQueryManager
      */
     public function __call($name, $arguments)
     {
+        if (isset($arguments[1])) {
+            $sqlDir = $arguments[1];
+            if (substr($arguments[1], -1) != '/') {
+                $sqlDir .= '/';
+            }
+            $this->openFile($name, $sqlDir);
+        } else {
+            $this->openFile($name);
+        }
+
         if (!isset($arguments[0])) {
             return;
         }
