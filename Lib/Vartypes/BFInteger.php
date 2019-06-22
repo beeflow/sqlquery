@@ -62,10 +62,10 @@ class BFInteger implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         $value = (integer)$value;
         if (isset($value)) {

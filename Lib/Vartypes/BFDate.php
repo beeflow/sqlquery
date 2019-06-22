@@ -102,11 +102,12 @@ class BFDate implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
+     * @throws \Exception
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
-        $this->date = new \DateTime($value);
+        $this->date = new \DateTimeImmutable($value);
 
         return $this;
     }

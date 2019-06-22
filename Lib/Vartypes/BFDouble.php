@@ -32,11 +32,12 @@ class BFDouble implements VartypeInterface
      */
     private $value;
 
-
     /**
      * BFDouble constructor.
      *
      * @param null $val
+     *
+     * @throws IncorrectValueTypeException
      */
     public function __construct($val = null)
     {
@@ -62,10 +63,10 @@ class BFDouble implements VartypeInterface
     /**
      * @param $val
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($val)
+    public function setValue($val): VartypeInterface
     {
         $val = (double)str_replace(',', '.', $val);
 

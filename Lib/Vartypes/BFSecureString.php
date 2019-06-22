@@ -19,6 +19,7 @@
 namespace Beeflow\SQLQueryManager\Lib\Vartypes;
 
 use Beeflow\SQLQueryManager\Exception\IncorrectValueTypeException;
+use Exception;
 
 /**
  * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
@@ -38,6 +39,7 @@ class BFSecureString implements VartypeInterface
      * @param Mixed $value
      *
      * @throws Exception
+     * @throws IncorrectValueTypeException
      */
     public function __construct($value = null)
     {
@@ -57,16 +59,16 @@ class BFSecureString implements VartypeInterface
      */
     public function __toString()
     {
-        return (string)$this->value;
+        return (string) $this->value;
     }
 
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         $value = strtr(addslashes(strip_tags($value)), array(
             "\0"   => "",
@@ -74,7 +76,6 @@ class BFSecureString implements VartypeInterface
             ");"   => "",
             ")"    => "",
             "}"    => "",
-            "("    => "",
             "("    => "",
             "<!--" => "",
             "<"    => "&lt;",
@@ -84,10 +85,10 @@ class BFSecureString implements VartypeInterface
 
         if (gettype($value) == 'string') {
             $this->value = $value;
-        } else {
-            throw new IncorrectValueTypeException('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
+
+            return $this;
         }
 
-        return $this;
+        throw new IncorrectValueTypeException('Value must be ' . __CLASS__ . ' type but is ' . gettype($value));
     }
 }

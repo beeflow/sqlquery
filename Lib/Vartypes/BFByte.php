@@ -60,10 +60,10 @@ class BFByte implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         $value = (integer)$value;
         if (isset($value) && in_array($value, array(0, 1))) {

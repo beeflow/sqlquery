@@ -33,9 +33,9 @@ class BFString implements VartypeInterface
 
     /**
      *
-     * @param Mixed $val
+     * @param null $value
      *
-     * @throws \Exception
+     * @throws IncorrectValueTypeException
      */
     public function __construct($value = null)
     {
@@ -61,10 +61,10 @@ class BFString implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         if (is_string($value)) {
             $this->value = $value;

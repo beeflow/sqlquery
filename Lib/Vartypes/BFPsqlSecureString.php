@@ -68,10 +68,10 @@ class BFPsqlSecureString implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         $value = strtr(
             strip_tags($value),
@@ -82,7 +82,6 @@ class BFPsqlSecureString implements VartypeInterface
                 ");"   => "",
                 ")"    => "",
                 "}"    => "",
-                "("    => "",
                 "("    => "",
                 "<!--" => "",
                 "<"    => "&lt;",

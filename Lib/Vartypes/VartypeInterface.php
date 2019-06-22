@@ -22,9 +22,10 @@ interface VartypeInterface
     /**
      * @param $value
      *
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value);
+    public function setValue($value): VartypeInterface;
 
     /**
      * Returns value in correct type

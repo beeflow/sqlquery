@@ -1,11 +1,11 @@
 {
   "name": "beeflow/sqlquerymanager",
   "type": "symfony-bundle",
-  "vesion": "1.2.0",
-  "license": "GPL",
+  "license": "LGPL-3.0-or-later",
   "description": "SQLQuery Manager Util",
   "keywords": [
-    "SQL", "SQL manager"
+    "SQL",
+    "SQL manager"
   ],
   "homepage": "https://github.com/beeflow/sqlquery",
   "authors": [
@@ -19,15 +19,20 @@
     "source": "https://github.com/beeflow/sqlquery/"
   },
   "require": {
-    "php": ">=5.5.0",
-    "symfony/framework-bundle": ">=2.8"
+    "php": ">=7.1",
+    "symfony/framework-bundle": ">=3.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.1"
   },
   "autoload": {
-    "psr-4": { "Beeflow\\SQLQueryManager\\": "" }
-  },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        }
+    "psr-4": {
+      "Beeflow\\SQLQueryManager\\": ""
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
 }

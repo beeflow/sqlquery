@@ -56,18 +56,18 @@ class BFBoolean implements VartypeInterface
      */
     public function __toString()
     {
-        return (boolean)$this->value;
+        return (boolean) $this->value;
     }
 
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
-        $val = (boolean)$value;
+        $val = (boolean) $value;
         if (gettype($val) == 'boolean') {
             $this->value = $val;
         } else {

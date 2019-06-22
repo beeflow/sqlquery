@@ -18,55 +18,96 @@
 
 namespace Beeflow\SQLQueryManager\Tests;
 
-use Beeflow\SQLQueryManager\SQLQuery;
+use Beeflow\SQLQueryManager\Exception\EmptyQueryException;
+use Beeflow\SQLQueryManager\Exception\NoQueryException;
+use Beeflow\SQLQueryManager\Lib\SQLQueryManager;
+use Beeflow\SQLQueryManager\Lib\Vartypes\BFInteger;
+use Beeflow\SQLQueryManager\Lib\Vartypes\BFNip;
+use Beeflow\SQLQueryManager\Lib\Vartypes\BFSecureString;
+use Exception;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SQLQueryTest
  *
- * @author Rafal Przetakowski <rafal.p@beeflow.co.uk>
+ * @author  Rafal Przetakowski <rafal.p@beeflow.co.uk>
  * @package Beeflow\SQLQueryManage\Tests
  */
-class SQLQueryTest extends \PHPUnit\Framework\TestCase
+class SQLQueryTest extends TestCase
 {
-
+    /**
+     * @var SQLQueryManager
+     */
     private $sqlQuery;
 
-    public function setUp()
+    /**
+     * @throws \ReflectionException
+     */
+    public function setUp(): void
     {
-        $this->sqlQuery = new SQLQuery();
-        $this->sqlQuery->setSqlDirectory('Tests/SQL/');
+        $containerInterfaceMock = $this->createMock(ContainerInterface::class);
+        $secureStringMock = $this->createMock(BFSecureString::class);
+        $secureStringMock->method('setValue')
+            ->willReturnReference($secureStringMock);
+        $secureStringMock->method('val')
+            ->willReturn('TEST_VALUE');
+
+        $integerMock = $this->createMock(BFInteger::class);
+        $integerMock->method('setValue')
+            ->willReturnReference($integerMock);
+        $integerMock->method('val')
+            ->willReturn(11);
+
+        $nipMock = $this->createMock(BFNip::class);
+        $nipMock->method('setValue')->willReturnReference($nipMock);
+        $nipMock->method('val')->willReturn('1111111111');
+
+        $this->sqlQuery = new SQLQueryManager($containerInterfaceMock);
+        $this->sqlQuery
+            ->addVarType($secureStringMock, 'secureString')
+            ->addVarType($integerMock, 'integer')
+            ->addVarType($nipMock, 'nip')
+            ->setSqlDirectory('Tests/SQL/');
     }
 
     /**
-     * @expectedException Beeflow\SQLQueryManager\Exception\NoQueryException
+     * @throws EmptyQueryException
+     * @throws NoQueryException
      */
-    public function testFileNotExists()
+    public function testFileNotExists(): void
     {
+        $this->expectException(NoQueryException::class);
         $this->sqlQuery->openFile('unknownSQLQuery');
     }
 
     /**
-     * @expectedException Beeflow\SQLQueryManager\Exception\EmptyQueryException
+     * @throws EmptyQueryException
+     * @throws NoQueryException
      */
-    public function testEmptyQueryException()
+    public function testEmptyQueryException(): void
     {
+        $this->expectException(EmptyQueryException::class);
         $this->sqlQuery->openFile('emptyQuery');
     }
 
-    public function testCorrectSQL()
+    /**
+     * polish vat no algoritm allows to use 1111111111 vat number
+     * if you want to check an european vat no see:
+     * http://www.phpclasses.org/package/2280-PHP-Check-if-a-European-VAT-number-is-valid.html
+     *
+     * @throws EmptyQueryException
+     * @throws NoQueryException
+     */
+    public function testCorrectSQL(): void
     {
-        $expected = "SELECT example1, example2, example3 FROM exampleTable  WHERE example4 = TEST_VALUE AND example5 = 11 AND vatno = 1111111111 and valuearray IN ('one', 'two', 'tree') and valueWithoutParamType = 'value Without Param Type' ";
+        $expected = "SELECT example1, example2, example3 FROM exampleTable WHERE example4 = TEST_VALUE AND example5 = 11 AND vatno = 1111111111 and valuearray IN ('one', 'two', 'tree') and valueWithoutParamType = 'value Without Param Type' ";
         $this->sqlQuery->openFile('sqlExample');
         $this->sqlQuery->value = 'TEST_VALUE';
 
         // if you set a string value it will be set as 0 (zero) because (integer)'ddd' = 0 (zero)
         $this->sqlQuery->value2 = 11;
-
-        // polish vat no algoritm allows to use 1111111111 vat number
-        // if you want to check an european vat no see:
-        // http://www.phpclasses.org/package/2280-PHP-Check-if-a-European-VAT-number-is-valid.html
         $this->sqlQuery->vatno = '1111111111';
-
         $this->sqlQuery->valueArrayWithoutAtype = array('one', 'two', 'tree');
         $this->sqlQuery->valueWithoutParamType = "value Without Param Type";
 
@@ -75,9 +116,13 @@ class SQLQueryTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testCorrectSQLWithCondition()
+    /**
+     * @throws EmptyQueryException
+     * @throws NoQueryException
+     */
+    public function testCorrectSQLWithCondition(): void
     {
-        $expected = "SELECT example1, example2, example3 FROM exampleTable  WHERE example4 = TEST_VALUE AND example5 = 11 AND vatno = 1111111111 and valuearray IN ('one', 'two', 'tree') and valueWithoutParamType = 'value Without Param Type'  and someField = 1 ";
+        $expected = "SELECT example1, example2, example3 FROM exampleTable WHERE example4 = TEST_VALUE AND example5 = 11 AND vatno = 1111111111 and valuearray IN ('one', 'two', 'tree') and valueWithoutParamType = 'value Without Param Type'  and someField = 11 ";
         $this->sqlQuery->openFile('sqlExample');
         $this->sqlQuery->value = 'TEST_VALUE';
 
@@ -97,15 +142,43 @@ class SQLQueryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @throws EmptyQueryException
+     * @throws NoQueryException
+     * @throws \ReflectionException
      */
-    public function testIncorrectValue()
+    public function testIncorrectValue(): void
     {
-        $this->sqlQuery->openFile('sqlExample');
-        $this->sqlQuery->value = 'TEST_VALUE';
+        $this->expectException(Exception::class);
+
+        $containerInterfaceMock = $this->createMock(ContainerInterface::class);
+        $secureStringMock = $this->createMock(BFSecureString::class);
+        $secureStringMock->method('setValue')
+            ->willReturnReference($secureStringMock);
+        $secureStringMock->method('val')
+            ->willReturn('TEST_VALUE');
+
+        $integerMock = $this->createMock(BFInteger::class);
+        $integerMock->method('setValue')
+            ->willReturnReference($integerMock);
+        $integerMock->method('val')
+            ->willReturn(11);
+
+        $nipMock = $this->createMock(BFNip::class);
+        $nipMock->method('setValue')->willReturnReference($nipMock);
+        $nipMock->method('val')->willThrowException(new Exception());
+
+        $sqlQuery = new SQLQueryManager($containerInterfaceMock);
+        $sqlQuery
+            ->addVarType($secureStringMock, 'secureString')
+            ->addVarType($integerMock, 'integer')
+            ->addVarType($nipMock, 'nip')
+            ->setSqlDirectory('Tests/SQL/');
+
+        $sqlQuery->openFile('sqlExample');
+        $sqlQuery->value = 'TEST_VALUE';
 
         // if you set a string value it will be set as 0 (zero) because (integer)'ddd' = 0 (zero)
-        $this->sqlQuery->value2 = 11;
-        $this->sqlQuery->vatno = '1212111211';
+        $sqlQuery->value2 = 11;
+        $sqlQuery->vatno = '1212111211';
     }
 }

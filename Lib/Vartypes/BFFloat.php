@@ -72,10 +72,10 @@ class BFFloat implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         $value = (float)str_replace(',', '.', $value);
 

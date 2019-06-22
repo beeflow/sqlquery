@@ -70,10 +70,10 @@ class BFNip implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         $value = str_replace('-', '', $value);
         if (strlen($value) <> 10) {

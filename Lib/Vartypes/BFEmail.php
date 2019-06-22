@@ -59,10 +59,10 @@ class BFEmail implements VartypeInterface
     /**
      * @param $value
      *
-     * @return $this
+     * @return VartypeInterface
      * @throws IncorrectValueTypeException
      */
-    public function setValue($value)
+    public function setValue($value): VartypeInterface
     {
         if (!preg_match($this->regexp, $value)) {
             throw new IncorrectValueTypeException('Value must be correct ' . __CLASS__ . ' type.');
